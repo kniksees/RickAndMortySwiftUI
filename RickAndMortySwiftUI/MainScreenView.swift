@@ -29,7 +29,6 @@ struct CardReusibleView: View {
             }
             .frame(width: 156, height: 202)
             .padding(8)
-            
         }
     }
 }
@@ -70,7 +69,6 @@ struct MainScreenView: View {
                                 NavigationLink {
                                     DetailScreenView(url:  personages[number].url)
                                         .toolbarRole(.editor)
-                                    
                                 } label: {
                                     CardReusibleView(image: personagesImages[number], label: personages[number].name)
                                 }
