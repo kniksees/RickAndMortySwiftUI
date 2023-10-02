@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DetailScreenView: View {
+struct CharacterInfoScreenView: View {
     struct HeaderView: View {
         @State var image: Image
         @State var name: String
@@ -180,23 +180,6 @@ struct DetailScreenView: View {
     }
 
     var url: String
-//    @State var personage: Personage = Personage(
-//        header: DetailScreenView.Personage.Header(
-//            image: Image("Rick"),
-//            name: "Rick Sanchez",
-//            status: "Alive"),
-//        info: DetailScreenView.Personage.Info(
-//            species: "Human",
-//            type: "None",
-//            gender: "Male"),
-//        origin: DetailScreenView.Personage.Origin(
-//            name: "Earth",
-//            type: "Planet"),
-//        episodes: [DetailScreenView.Personage.Episode(
-//            name: "Pilot",
-//            numberOfEpisode: "1",
-//            numberOfSeries: "1",
-//            date: "December 2, 2013")])
     @State var personage: Personage?
     var body: some View {
 
@@ -227,19 +210,19 @@ struct DetailScreenView: View {
                 for i in 0..<episodesInfo.count {
                     episodes.append(Personage.Episode(
                         name: episodesInfo[i].name,
-                        numberOfEpisode: DateFormarters.episodeNumberFormater(episode: episodesInfo[i].episode),
+                        numberOfEpisode: Formarters.episodeNumberFormater(episode: episodesInfo[i].episode),
                         date: episodesInfo[i].air_date))
                 }
                 personage = Personage(
-                    header: DetailScreenView.Personage.Header(
+                    header: CharacterInfoScreenView.Personage.Header(
                         image: image,
                         name: personInfo.name,
                         status: personInfo.status ),
-                    info: DetailScreenView.Personage.Info(
+                    info: CharacterInfoScreenView.Personage.Info(
                         species: personInfo.species,
                         type: personInfo.type.count == 0 ? "None" : personInfo.type,
                         gender: personInfo.gender),
-                    origin: DetailScreenView.Personage.Origin(
+                    origin: CharacterInfoScreenView.Personage.Origin(
                         name: personInfo.origin.name,
                         type:  personInfo.origin.url.count != 0 ?  await NetworkManager.getPlanet(strUrl: personInfo.origin.url).type : "None"),
                     episodes: episodes)
@@ -258,5 +241,5 @@ struct DetailScreenView: View {
 }
 
 #Preview {
-    DetailScreenView(url: "https://rickandmortyapi.com/api/character/3")
+    CharacterInfoScreenView(url: "https://rickandmortyapi.com/api/character/3")
 }

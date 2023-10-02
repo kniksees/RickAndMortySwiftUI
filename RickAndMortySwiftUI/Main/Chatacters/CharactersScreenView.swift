@@ -27,20 +27,21 @@ struct CardReusibleView: View {
                     .foregroundStyle(Color.white)
                 Spacer()
             }
-            .frame(width: 156, height: 202)
             .padding(8)
+            .frame(width: 156, height: 202)
+                
         }
     }
 }
 
-struct MainScreenView: View {
+struct CharactersScreenView: View {
     
     @State private var personages = [Person]()
     @State private var personagesImages = [Image]()
     
     var body: some View {
         
-        NavigationStack {
+        //NavigationStack {
             ZStack {
                 Rectangle()
                     .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
@@ -52,8 +53,6 @@ struct MainScreenView: View {
                         Text("Chatacters")
                             .foregroundStyle(.white)
                             .font(.largeTitle)
-                            .padding(EdgeInsets(top: 0, leading: 25, bottom: 0, trailing: 0))
-                        Spacer()
                     }
                     
                     Spacer(minLength: 40)
@@ -69,6 +68,7 @@ struct MainScreenView: View {
                                 NavigationLink {
                                     DetailScreenView(url:  personages[number].url)
                                         .toolbarRole(.editor)
+                                    
                                 } label: {
                                     CardReusibleView(image: personagesImages[number], label: personages[number].name)
                                 }
@@ -90,11 +90,11 @@ struct MainScreenView: View {
                     }
                 }
             }
-        }
-        .accentColor(.white)
+//        }
+//        .accentColor(.white)
     }
 }
 
 #Preview {
-    MainScreenView()
+    CharactersScreenView()
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 
-class NetworkManager {
+class CharactersNetworkManager {
 
     static func getCountOfCharecters() async -> Int {
         let url = URL(string: "https://rickandmortyapi.com/api/character")!
