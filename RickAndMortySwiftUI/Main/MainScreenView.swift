@@ -18,7 +18,6 @@ struct BaseLinkReusibleView: View {
                 Text(label)
                     .foregroundStyle(.white)
                     .font(.system(size: 30))
-
         }
     }
 }
@@ -32,8 +31,8 @@ struct MainScreenView: View {
                     .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
                     .ignoresSafeArea()
                     .foregroundStyle(Color("standartDarkBlueColor"))
-                ScrollView {
-                    Spacer(minLength: 50)
+                ScrollView(showsIndicators: false) {
+                    Spacer(minLength: 250)
                     NavigationLink {
                         CharactersScreenView()
                             .toolbarRole(.editor)
@@ -47,7 +46,8 @@ struct MainScreenView: View {
                         BaseLinkReusibleView(label: "Locations")
                     }
                     NavigationLink {
-                        
+                        EpisodesScreenView()
+                            .toolbarRole(.editor)
                     } label: {
                         BaseLinkReusibleView(label: "Episodes")
                     }

@@ -57,63 +57,66 @@ class CharactersNetworkManager {
         }
         return episodes
     }
+    
+    struct Response: Decodable {
+        var info: Info
+        var results: [Person]
+    }
+
+    struct Info: Decodable {
+        var count: Int
+        var pages: Int
+        var next: String?
+        var prev: String?
+    }
+
+    struct Person: Decodable {
+        var id: Int
+        var name: String
+        var status: String
+        var species: String
+        var type: String
+        var gender: String
+        var origin: Location
+        var location: Location
+        var image: String
+        var episode: [String]
+        var url: String
+        var created: String
+    }
+
+    struct Location: Decodable {
+        var name: String
+        var url: String
+    }
+
+    struct PersonInfo: Decodable {
+        let id: Int
+        let name, status, species, type: String
+        let gender: String
+        let origin, location: Location
+        let image: String
+        let episode: [String]
+        let url: String
+        let created: String
+    }
+
+    struct Planet: Decodable {
+        let id: Int
+        let name, type, dimension: String
+        let residents: [String]
+        let url: String
+        let created: String
+    }
+
+
+    struct Episode: Decodable {
+        let name: String
+        let air_date: String
+        let episode: String
+        let url: String
+    }
 }
 
 
-struct Response: Decodable {
-    var info: Info
-    var results: [Person]
-}
 
-struct Info: Decodable {
-    var count: Int
-    var pages: Int
-    var next: String?
-    var prev: String?
-}
-
-struct Person: Decodable {
-    var id: Int
-    var name: String
-    var status: String
-    var species: String
-    var type: String
-    var gender: String
-    var origin: Location
-    var location: Location
-    var image: String
-    var episode: [String]
-    var url: String
-    var created: String
-}
-
-struct Location: Decodable {
-    var name: String
-    var url: String
-}
-
-struct PersonInfo: Decodable {
-    let id: Int
-    let name, status, species, type: String
-    let gender: String
-    let origin, location: Location
-    let image: String
-    let episode: [String]
-    let url: String
-    let created: String
-}
-
-struct Planet: Decodable {
-    let id: Int
-    let name, type, dimension: String
-    let residents: [String]
-    let url: String
-    let created: String
-}
-
-
-struct Episode: Decodable {
-    let name: String
-    let air_date: String
-    let episode: String
-}

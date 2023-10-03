@@ -10,7 +10,25 @@ import SwiftUI
 
 
 struct LocationsScreenView: View {
-    //@State var locations
+    
+    struct LocationPreviewReusibleView: View {
+        let label: String
+        var body: some View {
+            ZStack {
+                Rectangle()
+                    .frame(width: 327, height: 40)
+                    .foregroundStyle(Color("standartGrayColor"))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    Text(label)
+                        .foregroundStyle(.white)
+                        .font(.system(size: 20))
+
+            }
+            .frame(width: 327, height: 40)
+        }
+    }
+    
+    @State var locations = [LocationsNetworkManager.Location]()
     var body: some View {
         ZStack {
             Rectangle()
@@ -20,13 +38,33 @@ struct LocationsScreenView: View {
             VStack {
                 Spacer(minLength: 40)
                 HStack {
-                    Text("Chatacters")
+                    Text("Locations")
                         .foregroundStyle(.white)
                         .font(.largeTitle)
                 }
                 Spacer(minLength: 40)
-                ScrollView {
-                        
+                ScrollView(showsIndicators: false) {
+                    
+                    ForEach(0..<locations.count, id: \.self) { id in
+                        NavigationLink {
+                            LocationInfoScreenView(url: locations[id].url)
+                                .toolbarRole(.editor)
+                        } label: {
+                            LocationPreviewReusibleView(label: locations[id].name)
+                        }
+                    }
+                }
+                .onAppear() {
+                    Task {
+                        var loc = [LocationsNetworkManager.Location]()
+                        let countOfPages = await LocationsNetworkManager.getCountOfPages()
+                        for i in 1...countOfPages {
+                            let add = await LocationsNetworkManager.getLocations(num: i)
+                            loc += add
+                        }
+                        locations = loc
+                    }
+
                 }
             }
         }
