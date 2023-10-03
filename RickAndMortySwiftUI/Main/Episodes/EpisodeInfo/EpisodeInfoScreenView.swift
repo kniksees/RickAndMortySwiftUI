@@ -72,23 +72,24 @@ struct EpisodeInfoScreenView: View {
             
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .frame(width: 78)
+                    .frame(width: 78, height: 101)
                     .foregroundStyle(Color("standartGrayColor"))
                 VStack {
                     image
                         .resizable()
                         .frame(width: 70, height: 70)
                         .clipShape(RoundedRectangle(cornerRadius: 5))
-                        .padding(EdgeInsets(top: 4, leading: 0, bottom: 0, trailing: 0))
-                    Spacer()
+                    Spacer(minLength: 0)
                     Text(label)
                         .foregroundStyle(Color.white)
                         .font(.system(size: 10))
-                    Spacer()
+                    Spacer(minLength: 0)
                 }
-                .padding(4)
-                .frame(width: 78)
-                
+                .padding(EdgeInsets(top: 4,
+                                    leading: 0,
+                                    bottom: 0,
+                                    trailing: 0))
+                .frame(width: 78, height: 101)
             }
         }
     }
@@ -132,10 +133,9 @@ struct EpisodeInfoScreenView: View {
                                 } label: {
                                     CardReusibleView(image: personsImages[number],  label: persons[number].name)
                                 }
-
-       
                             }
                         }
+                        Spacer(minLength: 40)
                     }
                     .frame(width: 327)
                     .onAppear() {
@@ -163,6 +163,6 @@ struct EpisodeInfoScreenView: View {
 }
 
 #Preview {
-    EpisodeInfoScreenView(url: "https://rickandmortyapi.com/api/episode/9")
+    EpisodeInfoScreenView(url: "https://rickandmortyapi.com/api/episode/47")
 }
 

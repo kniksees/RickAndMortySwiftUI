@@ -94,7 +94,6 @@ struct LocationInfoScreenView: View {
                                     bottom: 0,
                                     trailing: 0))
                 .frame(width: 78, height: 101)
-                
             }
         }
     }
@@ -117,7 +116,7 @@ struct LocationInfoScreenView: View {
                     HStack {
                         HeaderView(name: location!.name)
                     }
-                    .frame(width: 327, height: 40)
+                    .frame(width: 327)
                     let columns = [
                         GridItem(spacing: 5, alignment: Alignment(horizontal: .trailing, vertical: .top)),
                         GridItem(spacing: 5, alignment: Alignment(horizontal: .trailing, vertical: .top)),
@@ -142,6 +141,7 @@ struct LocationInfoScreenView: View {
        
                             }
                         }
+                        Spacer(minLength: 40)
                     }
                     .frame(width: 327)
                     .onAppear() {

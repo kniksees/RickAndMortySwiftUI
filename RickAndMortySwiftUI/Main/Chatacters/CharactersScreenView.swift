@@ -33,9 +33,7 @@ struct CharactersScreenView: View {
                                     leading: 0,
                                     bottom: 0,
                                     trailing: 0))
-                .frame(width: 156, height: 202)
-               
-                
+                .frame(width: 156, height: 202)   
             }
         }
     }

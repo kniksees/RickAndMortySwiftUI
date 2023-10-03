@@ -216,10 +216,9 @@ struct CharacterInfoScreenView: View {
                         } label: {
                             EpisodeView(name: personage!.episodes[index].name, numberOfEpisode: personage!.episodes[index].numberOfEpisode, date: personage!.episodes[index].date)
                         }
-                        
-                        
                     }
                 }
+                Spacer(minLength: 40)
             }
             .onAppear() {
                 Task {
