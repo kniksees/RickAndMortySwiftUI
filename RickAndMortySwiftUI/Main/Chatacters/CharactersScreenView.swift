@@ -10,8 +10,8 @@ import SwiftUI
 struct CharactersScreenView: View {
     
     struct CardReusibleView: View {
-        @State var image: Image
-        @State var label: String
+        var image: Image
+        var label: String
         var body: some View {
             
             ZStack {
@@ -23,14 +23,16 @@ struct CharactersScreenView: View {
                         .resizable()
                         .frame(width: 140, height: 140)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     Spacer(minLength: 0)
                     Text(label)
                         .foregroundStyle(Color.white)
                     Spacer(minLength: 0)
       
                 }
-                .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
+                .padding(EdgeInsets(top: 8, 
+                                    leading: 0,
+                                    bottom: 0,
+                                    trailing: 0))
                 .frame(width: 156, height: 202)
                
                 
@@ -43,7 +45,6 @@ struct CharactersScreenView: View {
     
     var body: some View {
         
-        //NavigationStack {
         ZStack {
             Rectangle()
                 .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
@@ -92,8 +93,6 @@ struct CharactersScreenView: View {
                 }
             }
         }
-        //        }
-        //        .accentColor(.white)
     }
 }
 

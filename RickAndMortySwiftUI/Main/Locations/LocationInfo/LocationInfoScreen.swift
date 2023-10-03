@@ -35,8 +35,8 @@ struct LocationInfoScreenView: View {
     
     struct InfoView: View {
         struct LineInInfoView: View {
-            @State var label: String
-            @State var info: String
+            var label: String
+            var info: String
             var body: some View {
                 HStack {
                     Text(label)
@@ -46,11 +46,14 @@ struct LocationInfoScreenView: View {
                         .foregroundStyle(.white)
                         .lineLimit(1)
                 }
-                .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
+                .padding(EdgeInsets(top: 5, 
+                                    leading: 15,
+                                    bottom: 5,
+                                    trailing: 15))
             }
         }
-        @State var type: String
-        @State var dimension: String
+        var type: String
+        var dimension: String
         var body: some View {
             ZStack {
                 Rectangle()
@@ -67,8 +70,8 @@ struct LocationInfoScreenView: View {
     }
     
     struct CardReusibleView: View {
-        @State var image: Image
-        @State var label: String
+        var image: Image
+        var label: String
         var body: some View {
             
             ZStack {
@@ -80,14 +83,16 @@ struct LocationInfoScreenView: View {
                         .resizable()
                         .frame(width: 70, height: 70)
                         .clipShape(RoundedRectangle(cornerRadius: 5))
-                        .padding(EdgeInsets(top: 4, leading: 0, bottom: 0, trailing: 0))
-                    Spacer()
+                    Spacer(minLength: 0)
                     Text(label)
                         .foregroundStyle(Color.white)
                         .font(.system(size: 10))
-                    Spacer()
+                    Spacer(minLength: 0)
                 }
-                .padding(4)
+                .padding(EdgeInsets(top: 4, 
+                                    leading: 0,
+                                    bottom: 0,
+                                    trailing: 0))
                 .frame(width: 78, height: 101)
                 
             }

@@ -16,15 +16,19 @@ struct LocationsScreenView: View {
         var body: some View {
             ZStack {
                 Rectangle()
-                    .frame(width: 327, height: 40)
+                    .frame(width: 327)
                     .foregroundStyle(Color("standartGrayColor"))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     Text(label)
                         .foregroundStyle(.white)
                         .font(.system(size: 20))
+                        .padding(EdgeInsets(top: 5,
+                                            leading: 0,
+                                            bottom: 5,
+                                            trailing: 0))
 
             }
-            .frame(width: 327, height: 40)
+            .frame(width: 327)
         }
     }
     
@@ -32,7 +36,8 @@ struct LocationsScreenView: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+                .frame(width: UIScreen.main.bounds.size.width, 
+                       height: UIScreen.main.bounds.size.height)
                 .ignoresSafeArea()
                 .foregroundStyle(Color("standartDarkBlueColor"))
             VStack {

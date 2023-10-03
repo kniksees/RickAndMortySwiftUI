@@ -9,9 +9,9 @@ import SwiftUI
 
 struct CharacterInfoScreenView: View {
     struct HeaderView: View {
-        @State var image: Image
-        @State var name: String
-        @State var status: String
+        var image: Image
+        var name: String
+        var status: String
         var body: some View {
             image
                 .resizable()
@@ -30,8 +30,8 @@ struct CharacterInfoScreenView: View {
     
     struct InfoView: View {
         struct LineInInfoView: View {
-            @State var label: String
-            @State var info: String
+            var label: String
+            var info: String
             var body: some View {
                 HStack {
                     Text(label)
@@ -44,9 +44,9 @@ struct CharacterInfoScreenView: View {
                 .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
             }
         }
-        @State var species: String
-        @State var type: String
-        @State var gender: String
+        var species: String
+        var type: String
+        var gender: String
         var body: some View {
             ZStack {
                 Rectangle()
@@ -64,7 +64,7 @@ struct CharacterInfoScreenView: View {
     }
     
     struct SectionLabelView: View {
-        @State var label: String
+        var label: String
         var body: some View {
             HStack {
                 Text(label)
