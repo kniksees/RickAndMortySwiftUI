@@ -26,7 +26,6 @@ struct EpisodesScreenView: View {
                                             leading: 0,
                                             bottom: 5,
                                             trailing: 0))
-
             }
             .frame(width: 327)
         }
@@ -57,6 +56,7 @@ struct EpisodesScreenView: View {
                             EpisodePreviewReusibleView(label: episodes[id].name)
                         }
                     }
+                    Spacer(minLength: 40)
                 }
                 .onAppear() {
                     Task {
@@ -68,7 +68,6 @@ struct EpisodesScreenView: View {
                         }
                         episodes = ep
                     }
-
                 }
             }
         }

@@ -73,9 +73,9 @@ struct CharactersScreenView: View {
                             } label: {
                                 CardReusibleView(image: personagesImages[number], label: personages[number].name)
                             }
-                            
                         }
                     }
+                    Spacer(minLength: 40)
                 }.onAppear() {
                     Task {
                         let countOfPages = await CharactersNetworkManager.getCountOfPages()

@@ -137,8 +137,6 @@ struct LocationInfoScreenView: View {
                                 } label: {
                                     CardReusibleView(image: personsImages[number],  label: persons[number].name)
                                 }
-
-       
                             }
                         }
                         Spacer(minLength: 40)

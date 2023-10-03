@@ -49,7 +49,6 @@ struct LocationsScreenView: View {
                 }
                 Spacer(minLength: 40)
                 ScrollView(showsIndicators: false) {
-                    
                     ForEach(0..<locations.count, id: \.self) { id in
                         NavigationLink {
                             LocationInfoScreenView(url: locations[id].url)
@@ -58,6 +57,7 @@ struct LocationsScreenView: View {
                             LocationPreviewReusibleView(label: locations[id].name)
                         }
                     }
+                    Spacer(minLength: 40)
                 }
                 .onAppear() {
                     Task {
@@ -69,7 +69,6 @@ struct LocationsScreenView: View {
                         }
                         locations = loc
                     }
-
                 }
             }
         }
