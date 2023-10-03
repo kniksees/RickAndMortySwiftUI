@@ -10,7 +10,7 @@ import SwiftUI
 struct LocationInfoScreenView: View {
     
     struct SectionLabelView: View {
-        @State var label: String
+        var label: String
         var body: some View {
             HStack {
                 Text(label)

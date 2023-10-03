@@ -78,8 +78,8 @@ struct CharacterInfoScreenView: View {
     }
     
     struct OriginView: View {
-        @State var name: String
-        @State var type: String
+        var name: String
+        var type: String
         var body: some View {
             ZStack {
                 Rectangle()
@@ -122,9 +122,9 @@ struct CharacterInfoScreenView: View {
     }
     
     struct EpisodeView: View {
-        @State var name: String
-        @State var numberOfEpisode: String
-        @State var date: String
+        var name: String
+        var numberOfEpisode: String
+        var date: String
         var body: some View {
             ZStack {
                 Rectangle()

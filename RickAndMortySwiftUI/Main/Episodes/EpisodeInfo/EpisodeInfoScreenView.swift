@@ -10,7 +10,7 @@ import SwiftUI
 struct EpisodeInfoScreenView: View {
     
     struct SectionLabelView: View {
-        @State var label: String
+        var label: String
         var body: some View {
             HStack {
                 Text(label)
@@ -35,8 +35,8 @@ struct EpisodeInfoScreenView: View {
     
     struct InfoView: View {
         struct LineInInfoView: View {
-            @State var label: String
-            @State var info: String
+            var label: String
+            var info: String
             var body: some View {
                 HStack {
                     Text(label)
@@ -48,8 +48,8 @@ struct EpisodeInfoScreenView: View {
                 .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
             }
         }
-        @State var airDate: String
-        @State var episode: String
+        var airDate: String
+        var episode: String
         var body: some View {
             ZStack {
                 Rectangle()
@@ -66,8 +66,8 @@ struct EpisodeInfoScreenView: View {
     }
     
     struct CardReusibleView: View {
-        @State var image: Image
-        @State var label: String
+        var image: Image
+        var label: String
         var body: some View {
             
             ZStack {
