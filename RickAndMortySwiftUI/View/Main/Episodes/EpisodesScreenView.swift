@@ -30,9 +30,12 @@ struct EpisodesScreenView: View {
         }
     }
     
-    @Query private var episodes: [Storege.Episode]
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
+        let storageManager = StorageManager(modelContext: modelContext)
+        let episodes = storageManager.getEpisodes()
+        
         ZStack {
             Rectangle()
                 .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
@@ -47,7 +50,7 @@ struct EpisodesScreenView: View {
                 }
                 Spacer(minLength: 40)
                 ScrollView(showsIndicators: false) {
-                    ForEach(episodes.sorted(by: {$0.identificator < $1.identificator})) { episode in
+                    ForEach(episodes) { episode in
                         NavigationLink {
                             EpisodeInfoScreenView(id: episode.identificator)
                                 .toolbarRole(.editor)

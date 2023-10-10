@@ -13,7 +13,9 @@ struct RickAndMortySwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
             MainScreenView()
-                .modelContainer(for: [Storege.Location.self, Storege.Person.self, Storege.Episode.self], isAutosaveEnabled: true)
+                .modelContainer(for: [Storege.Location.self, Storege.Person.self, Storege.Episode.self]
+                                //, inMemory: true
+                                , isAutosaveEnabled: true)
         }
     }
 }

@@ -12,7 +12,7 @@ class Storege {
     @Model
     final class Location {
         var id: UUID = UUID()
-        var identificator: Int
+        @Attribute(.unique) var identificator: Int
         var name: String
         var type: String
         var dimension: String
@@ -34,7 +34,7 @@ class Storege {
     @Model
     final class Person {
         var id: UUID = UUID()
-        var identificator: Int
+        @Attribute(.unique) var identificator: Int
         var name: String
         let status: String
         let species: String
@@ -70,7 +70,7 @@ class Storege {
     @Model
     final class Episode {
         let id = UUID()
-        let identificator: Int
+        @Attribute(.unique) let identificator: Int
         let name: String
         let air_date: String
         let episode: String

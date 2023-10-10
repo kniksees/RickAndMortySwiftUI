@@ -63,33 +63,10 @@ struct MainScreenView: View {
             }
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
-                    Task {
-                        let count = await LocationsNetworkManager.getCountOfLocations()
-                        if locations.count != count || locations.count == 0 {
-                            for i in locations.count + 1...count {
-                                let location = await LocationsNetworkManager.getLocation(num: i)
-                                modelContext.insert(Storege.Location(location: location))
-                            }
-                        }
-                    }
-                    Task {
-                        let count = await PersonsNetworkManager.getCountOfPersons()
-                        if persons.count != count || persons.count == 0 {
-                            for i in  persons.count + 1...count {
-                                let person = await PersonsNetworkManager.getPersonInfo(id: i)
-                                await modelContext.insert(Storege.Person(person: person, imageData: PersonsNetworkManager.getDataByURL(apiURL: person.image)))
-                            }
-                        }
-                    }
-                    Task {
-                        let count = await EpisodesNetworkManager.getCountOfEpisodes()
-                        if episodes.count != count || episodes.count == 0 {
-                            for i in episodes.count + 1...count {
-                                let episode = await EpisodesNetworkManager.getEpisodes(id: i)
-                                modelContext.insert(Storege.Episode(episode: episode))
-                            }
-                        }
-                    }
+                    let storageManager = StorageManager(modelContext: modelContext)
+                    storageManager.requestPersons(personsCount: persons.count)
+                    storageManager.requestEpisodes(episodesCount: episodes.count)
+                    storageManager.requestLocations(locationsCount: locations.count)
                 }
             }
         }

@@ -100,13 +100,13 @@ struct LocationInfoScreenView: View {
     }
     
     var id: Int
-    @Query private var locations: [Storege.Location]
-    @Query private var persons: [Storege.Person]
-    @Query private var episodes: [Storege.Episode]
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
-        let location = locations.filter({$0.identificator == id}).first!
-        let personsFiltered = persons.filter({Set(location.residents).contains($0.identificator)})
+
+        let storageManager = StorageManager(modelContext: modelContext)
+        let location = storageManager.getLocation(id: id)!
+        let persons = storageManager.getPersons(setOfId: location.residents)
         
         ZStack {
             Rectangle()
@@ -132,7 +132,7 @@ struct LocationInfoScreenView: View {
                     
                     LazyVGrid(columns: columns, spacing: 5) {
                         
-                        ForEach(personsFiltered) { person in
+                        ForEach(persons) { person in
                             NavigationLink {
                                 CharacterInfoScreenView(id:  person.identificator)
                                     .toolbarRole(.editor)

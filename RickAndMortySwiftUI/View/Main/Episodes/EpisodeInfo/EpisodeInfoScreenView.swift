@@ -95,14 +95,14 @@ struct EpisodeInfoScreenView: View {
         }
     }
     
-    @Query private var locations: [Storege.Location]
-    @Query private var persons: [Storege.Person]
-    @Query private var episodes: [Storege.Episode]
     var id: Int
-    
+    @Environment(\.modelContext) private var modelContext
+
     var body: some View {
-        let episode = episodes.filter({$0.identificator == id}).first!
-        let personsFiltered = persons.filter({Set(episode.characters).contains($0.identificator)}).sorted(by: {$0.identificator < $1.identificator})
+        
+        let storageManager = StorageManager(modelContext: modelContext)
+        let episode = storageManager.getEpisode(id: id)
+        let personsFiltered = storageManager.getPersons(setOfId: episode.characters)
         
         ZStack {
             Rectangle()

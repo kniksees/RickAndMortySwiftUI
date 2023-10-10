@@ -186,14 +186,15 @@ struct CharacterInfoScreenView: View {
     }
     
     var id: Int
-    @Query private var locations: [Storege.Location]
-    @Query private var persons: [Storege.Person]
-    @Query private var episodes: [Storege.Episode]
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
-        let personage = persons.filter({$0.identificator == id}).first!
-        let origin = locations.filter({$0.identificator == personage.origin}).first
-        let episodesFiltered = episodes.filter({Set(personage.episode).contains($0.identificator)}).sorted(by: {$0.identificator < $1.identificator})
+        
+        let storageManager = StorageManager(modelContext: modelContext)
+        let person = storageManager.getPerson(id: id)
+        let origin = storageManager.getLocation(id: person.origin)
+        let episodes = storageManager.getEpisodes(setOfId: person.episode)
+
         ZStack {
             Rectangle()
                 .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
@@ -201,12 +202,16 @@ struct CharacterInfoScreenView: View {
                 .foregroundStyle(Color("standartDarkBlueColor"))
             ScrollView(showsIndicators: false) {
                     Spacer(minLength: 80)
-                HeaderView(image: Image(uiImage: UIImage(data: personage.image) ?? UIImage()), name:  personage.name, status:  personage.status)
+                HeaderView(image: Image(uiImage: UIImage(data: person.image) ?? UIImage()),
+                           name:  person.name,
+                           status:  person.status)
                     SectionLabelView(label: "Info")
-                    InfoView(species: personage.species, type: personage.type, gender: personage.gender)
+                    InfoView(species: person.species,
+                             type: person.type,
+                             gender: person.gender)
                     SectionLabelView(label: "Origin")
                     NavigationLink {
-                        if personage.origin != nil {
+                        if person.origin != nil {
                             LocationInfoScreenView(id: origin!.identificator)
                                 .toolbarRole(ToolbarRole.editor)
                         }
@@ -214,7 +219,7 @@ struct CharacterInfoScreenView: View {
                         OriginView(name: origin?.name ?? "Unknown", type: origin?.type ?? "" )
                     }
                     SectionLabelView(label: "Episodes")
-                ForEach(episodesFiltered) {episode in
+                ForEach(episodes) {episode in
                         NavigationLink {
                             EpisodeInfoScreenView(id: episode.identificator)
                                 .toolbarRole(.editor)

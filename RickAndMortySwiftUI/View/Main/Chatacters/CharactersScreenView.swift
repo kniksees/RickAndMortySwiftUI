@@ -39,10 +39,11 @@ struct CharactersScreenView: View {
         }
     }
     
-    @Query private var persons: [Storege.Person]
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
-        
+        let storageManager = StorageManager(modelContext: modelContext)
+        let persons = storageManager.getPersons()
         ZStack {
             Rectangle()
                 .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
@@ -63,7 +64,7 @@ struct CharactersScreenView: View {
                 ]
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(persons.sorted(by: {$0.identificator < $1.identificator})) { person in
+                        ForEach(persons) { person in
                             NavigationLink {
                                 CharacterInfoScreenView(id: person.identificator)
                                     .toolbarRole(.editor)

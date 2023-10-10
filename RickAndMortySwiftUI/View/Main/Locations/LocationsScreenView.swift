@@ -31,10 +31,12 @@ struct LocationsScreenView: View {
         }
     }
     
-
-    @Query private var locations: [Storege.Location]
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
+        
+        let storageManager = StorageManager(modelContext: modelContext)
+        let locations = storageManager.getLocations()
         
         ZStack {
             Rectangle()
@@ -51,7 +53,7 @@ struct LocationsScreenView: View {
                 }
                 Spacer(minLength: 40)
                 ScrollView(showsIndicators: false) {
-                    ForEach(locations.sorted(by: {$0.identificator < $1.identificator})) { location in
+                    ForEach(locations) { location in
                         NavigationLink {
                             LocationInfoScreenView(id: location.identificator)
                                 .toolbarRole(ToolbarRole.editor)
