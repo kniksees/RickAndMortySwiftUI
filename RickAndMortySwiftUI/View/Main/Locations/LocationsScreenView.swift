@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import SwiftData
 
 
 struct LocationsScreenView: View {
@@ -19,24 +19,26 @@ struct LocationsScreenView: View {
                     .frame(width: 327)
                     .foregroundStyle(Color("standartGrayColor"))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
-                    Text(label)
-                        .foregroundStyle(.white)
-                        .font(.system(size: 20))
-                        .padding(EdgeInsets(top: 5,
-                                            leading: 0,
-                                            bottom: 5,
-                                            trailing: 0))
-
+                Text(label)
+                    .foregroundStyle(.white)
+                    .font(.system(size: 20))
+                    .padding(EdgeInsets(top: 5,
+                                        leading: 0,
+                                        bottom: 5,
+                                        trailing: 0))
             }
             .frame(width: 327)
         }
     }
     
-    @State var locations = [LocationsNetworkManager.Location]()
+
+    @Query private var locations: [Storege.Location]
+    
     var body: some View {
+        
         ZStack {
             Rectangle()
-                .frame(width: UIScreen.main.bounds.size.width, 
+                .frame(width: UIScreen.main.bounds.size.width,
                        height: UIScreen.main.bounds.size.height)
                 .ignoresSafeArea()
                 .foregroundStyle(Color("standartDarkBlueColor"))
@@ -49,26 +51,15 @@ struct LocationsScreenView: View {
                 }
                 Spacer(minLength: 40)
                 ScrollView(showsIndicators: false) {
-                    ForEach(0..<locations.count, id: \.self) { id in
+                    ForEach(locations.sorted(by: {$0.identificator < $1.identificator})) { location in
                         NavigationLink {
-                            LocationInfoScreenView(url: locations[id].url)
-                                .toolbarRole(.editor)
+                            LocationInfoScreenView(id: location.identificator)
+                                .toolbarRole(ToolbarRole.editor)
                         } label: {
-                            LocationPreviewReusibleView(label: locations[id].name)
+                            LocationPreviewReusibleView(label: location.name)
                         }
                     }
                     Spacer(minLength: 40)
-                }
-                .onAppear() {
-                    Task {
-                        var loc = [LocationsNetworkManager.Location]()
-                        let countOfPages = await LocationsNetworkManager.getCountOfPages()
-                        for i in 1...countOfPages {
-                            let add = await LocationsNetworkManager.getLocations(num: i)
-                            loc += add
-                        }
-                        locations = loc
-                    }
                 }
             }
         }
@@ -77,4 +68,5 @@ struct LocationsScreenView: View {
 
 #Preview {
     LocationsScreenView()
+        .modelContainer(for: [Storege.Location.self], inMemory: true, isAutosaveEnabled: true)
 }

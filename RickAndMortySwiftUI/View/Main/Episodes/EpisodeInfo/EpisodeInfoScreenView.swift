@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct EpisodeInfoScreenView: View {
     
@@ -94,23 +95,24 @@ struct EpisodeInfoScreenView: View {
         }
     }
     
-    var url: String
-    @State var episode: EpisodesNetworkManager.EpisodeIfo?
-    @State var persons = [CharactersNetworkManager.PersonInfo]()
-    @State var personsImages = [Image]()
-    
+    @Query private var locations: [Storege.Location]
+    @Query private var persons: [Storege.Person]
+    @Query private var episodes: [Storege.Episode]
+    var id: Int
     
     var body: some View {
+        let episode = episodes.filter({$0.identificator == id}).first!
+        let personsFiltered = persons.filter({Set(episode.characters).contains($0.identificator)}).sorted(by: {$0.identificator < $1.identificator})
+        
         ZStack {
             Rectangle()
                 .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
                 .ignoresSafeArea()
                 .foregroundStyle(Color("standartDarkBlueColor"))
             VStack {
-                if episode != nil {
                     Spacer(minLength: 40)
                     HStack {
-                        HeaderView(name: episode!.name)
+                        HeaderView(name: episode.name)
                     }
                     .frame(width: 327)
                     let columns = [
@@ -121,48 +123,27 @@ struct EpisodeInfoScreenView: View {
                     ]
                     ScrollView(showsIndicators: false) {
                         SectionLabelView(label: "Info")
-                        InfoView(airDate: episode!.air_date, episode: Formarters.episodeNumberFormater(episode: episode!.episode))
+                        InfoView(airDate: episode.air_date, episode: Formarters.episodeNumberFormater(episode: episode.episode))
                         SectionLabelView(label: "Characters")
-                        
                         LazyVGrid(columns: columns, spacing: 5) {
-                            
-                            ForEach(0..<min(persons.count, personsImages.count), id: \.self) { number in
+                            ForEach(personsFiltered) { person in
                                 NavigationLink {
-                                    CharacterInfoScreenView(url:  persons[number].url)
+                                    CharacterInfoScreenView(id: person.identificator)
                                         .toolbarRole(.editor)
                                 } label: {
-                                    CardReusibleView(image: personsImages[number],  label: persons[number].name)
+                                    CardReusibleView(image: Image(uiImage: UIImage(data: person.image) ?? UIImage()),  label: person.name)
                                 }
                             }
                         }
                         Spacer(minLength: 40)
                     }
                     .frame(width: 327)
-                    .onAppear() {
-                        Task {
-                            var tempPersons = [CharactersNetworkManager.PersonInfo]()
-                            for i in 0..<episode!.characters.count {
-                                await tempPersons.append(CharactersNetworkManager.getPersonInfo(strUrl:episode!.characters[i]))
-                            }
-                            persons = tempPersons
-                            var tempImages = [Image]()
-                            for i in 0..<tempPersons.count {
-                                tempImages.append(await Image(uiImage: UIImage(data: CharactersNetworkManager.getDataByURL(apiURL: tempPersons[i].image)) ?? UIImage()))
-                            }
-                            personsImages = tempImages
-                        }
-                    }
-                }
-            }
-        }.onAppear() {
-            Task {
-                episode = await EpisodesNetworkManager.getLocation(url: url)
             }
         }
     }
 }
 
 #Preview {
-    EpisodeInfoScreenView(url: "https://rickandmortyapi.com/api/episode/47")
+    EpisodeInfoScreenView(id: 1)
 }
 

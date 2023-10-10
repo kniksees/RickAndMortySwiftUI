@@ -6,8 +6,7 @@
 //
 
 import SwiftUI
-
-
+import SwiftData
 
 struct EpisodesScreenView: View {
     
@@ -31,7 +30,8 @@ struct EpisodesScreenView: View {
         }
     }
     
-    @State var episodes = [EpisodesNetworkManager.Episode]()
+    @Query private var episodes: [Storege.Episode]
+    
     var body: some View {
         ZStack {
             Rectangle()
@@ -47,27 +47,15 @@ struct EpisodesScreenView: View {
                 }
                 Spacer(minLength: 40)
                 ScrollView(showsIndicators: false) {
-                    
-                    ForEach(0..<episodes.count, id: \.self) { id in
+                    ForEach(episodes.sorted(by: {$0.identificator < $1.identificator})) { episode in
                         NavigationLink {
-                            EpisodeInfoScreenView(url: episodes[id].url)
+                            EpisodeInfoScreenView(id: episode.identificator)
                                 .toolbarRole(.editor)
                         } label: {
-                            EpisodePreviewReusibleView(label: episodes[id].name)
+                            EpisodePreviewReusibleView(label: episode.name)
                         }
                     }
                     Spacer(minLength: 40)
-                }
-                .onAppear() {
-                    Task {
-                        var ep = [EpisodesNetworkManager.Episode]()
-                        let countOfPages = await EpisodesNetworkManager.getCountOfPages()
-                        for i in 1...countOfPages {
-                            let add = await EpisodesNetworkManager.getEpisodes(num: i)
-                            ep += add
-                        }
-                        episodes = ep
-                    }
                 }
             }
         }

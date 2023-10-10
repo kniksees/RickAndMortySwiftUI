@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CharacterInfoScreenView: View {
     struct HeaderView: View {
@@ -184,74 +185,46 @@ struct CharacterInfoScreenView: View {
         var episodes: [Episode]
     }
     
-    var url: String
-    @State var personage: Personage?
+    var id: Int
+    @Query private var locations: [Storege.Location]
+    @Query private var persons: [Storege.Person]
+    @Query private var episodes: [Storege.Episode]
+    
     var body: some View {
-        
+        let personage = persons.filter({$0.identificator == id}).first!
+        let origin = locations.filter({$0.identificator == personage.origin}).first
+        let episodesFiltered = episodes.filter({Set(personage.episode).contains($0.identificator)}).sorted(by: {$0.identificator < $1.identificator})
         ZStack {
             Rectangle()
                 .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
                 .ignoresSafeArea()
                 .foregroundStyle(Color("standartDarkBlueColor"))
             ScrollView(showsIndicators: false) {
-                if personage != nil {
                     Spacer(minLength: 80)
-                    HeaderView(image: personage!.header.image, name:  personage!.header.name, status:  personage!.header.status)
+                HeaderView(image: Image(uiImage: UIImage(data: personage.image) ?? UIImage()), name:  personage.name, status:  personage.status)
                     SectionLabelView(label: "Info")
-                    InfoView(species: personage!.info.species, type: personage!.info.type, gender: personage!.info.gender)
+                    InfoView(species: personage.species, type: personage.type, gender: personage.gender)
                     SectionLabelView(label: "Origin")
                     NavigationLink {
-                        if personage!.origin.url.count != 0 {
-                            LocationInfoScreenView(url: personage!.origin.url)
-                                .toolbarRole(.editor)
+                        if personage.origin != nil {
+                            LocationInfoScreenView(id: origin!.identificator)
+                                .toolbarRole(ToolbarRole.editor)
                         }
                     } label: {
-                        OriginView(name: personage!.origin.name, type: personage!.origin.type)
+                        OriginView(name: origin?.name ?? "Unknown", type: origin?.type ?? "" )
                     }
                     SectionLabelView(label: "Episodes")
-                    ForEach(0..<personage!.episodes.count) {index in
+                ForEach(episodesFiltered) {episode in
                         NavigationLink {
-                            EpisodeInfoScreenView(url: personage!.episodes[index].url)
+                            EpisodeInfoScreenView(id: episode.identificator)
                                 .toolbarRole(.editor)
                         } label: {
-                            EpisodeView(name: personage!.episodes[index].name, numberOfEpisode: personage!.episodes[index].numberOfEpisode, date: personage!.episodes[index].date)
+                            EpisodeView(name: episode.name, numberOfEpisode: episode.episode, date: episode.air_date)
                         }
-                    }
                 }
                 Spacer(minLength: 40)
             }
-            .onAppear() {
-                Task {
-                    let personInfo = await CharactersNetworkManager.getPersonInfo(strUrl: url)
-                    let episodesInfo = await CharactersNetworkManager.getEpisodes(strUrl: personInfo.episode)
-                    var episodes = [Personage.Episode]()
-                    let image = await Image(uiImage: UIImage(data: CharactersNetworkManager.getDataByURL(apiURL: personInfo.image)) ?? UIImage())
-                    for i in 0..<episodesInfo.count {
-                        episodes.append(Personage.Episode(
-                            name: episodesInfo[i].name,
-                            numberOfEpisode: Formarters.episodeNumberFormater(episode: episodesInfo[i].episode),
-                            date: episodesInfo[i].air_date,
-                            url: episodesInfo[i].url))
-                    }
-                    personage = Personage(
-                        header: CharacterInfoScreenView.Personage.Header(
-                            image: image,
-                            name: personInfo.name,
-                            status: personInfo.status ),
-                        info: CharacterInfoScreenView.Personage.Info(
-                            species: personInfo.species,
-                            type: personInfo.type.count == 0 ? "None" : personInfo.type,
-                            gender: personInfo.gender),
-                        origin: CharacterInfoScreenView.Personage.Origin(
-                            name: personInfo.origin.name,
-                            type:  personInfo.origin.url.count != 0 ?  await CharactersNetworkManager.getPlanet(strUrl: personInfo.origin.url).type : "None",
-                            url: personInfo.origin.url),
-                        episodes: episodes)
-                }
-            }
         }
-        
-        
 //        .toolbarBackground(
 //            Color("standartDarkBlueColor"),
 //            for: .navigationBar)
@@ -263,5 +236,5 @@ struct CharacterInfoScreenView: View {
 }
 
 #Preview {
-    CharacterInfoScreenView(url: "https://rickandmortyapi.com/api/character/3")
+    CharacterInfoScreenView(id: 1)
 }

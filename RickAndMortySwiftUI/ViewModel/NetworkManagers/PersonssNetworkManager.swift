@@ -122,9 +122,9 @@
 import Foundation
 import SwiftUI
 
-class PersonssNetworkManager {
+class PersonsNetworkManager {
 
-    static func getCountOfCharecters() async -> Int {
+    static func getCountOfPersons() async -> Int {
         let url = URL(string: "https://rickandmortyapi.com/api/character")!
         let (data, _) = try! await URLSession.shared.data(from: url)
         return try! JSONDecoder().decode(Response.self, from: data).info.count
@@ -136,8 +136,8 @@ class PersonssNetworkManager {
         return data
     }
     
-    static func getPersonInfo(strUrl: String) async -> PersonInfo {
-        let url = URL(string: strUrl)!
+    static func getPersonInfo(id: Int) async -> PersonInfo {
+        let url = URL(string: "https://rickandmortyapi.com/api/character/\(id)")!
         let (data, _) = try! await URLSession.shared.data(from: url)
         return try! JSONDecoder().decode(PersonInfo.self, from: data)
     }
@@ -253,7 +253,7 @@ class PersonssNetworkManager {
     }
 
 
-    struct Episode: Decodable {
+    class Episode: Decodable {
         let name: String
         let air_date: String
         let episode: String

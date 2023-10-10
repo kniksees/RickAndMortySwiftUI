@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CharactersScreenView: View {
     
@@ -38,8 +39,7 @@ struct CharactersScreenView: View {
         }
     }
     
-    @State private var personages = [CharactersNetworkManager.Person]()
-    @State private var personagesImages = [Image]()
+    @Query private var persons: [Storege.Person]
     
     var body: some View {
         
@@ -63,31 +63,16 @@ struct CharactersScreenView: View {
                 ]
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 20) {
-                        
-                        ForEach(0..<min(personagesImages.count, personages.count), id: \.self) { number in
-                            
+                        ForEach(persons.sorted(by: {$0.identificator < $1.identificator})) { person in
                             NavigationLink {
-                                CharacterInfoScreenView(url:  personages[number].url)
+                                CharacterInfoScreenView(id: person.identificator)
                                     .toolbarRole(.editor)
-                                
                             } label: {
-                                CardReusibleView(image: personagesImages[number], label: personages[number].name)
+                                CardReusibleView(image: Image(uiImage: UIImage(data: person.image) ?? UIImage()), label: person.name)
                             }
                         }
                     }
                     Spacer(minLength: 40)
-                }.onAppear() {
-                    Task {
-                        let countOfPages = await CharactersNetworkManager.getCountOfPages()
-                        for i in 1...countOfPages {
-                            let add = await CharactersNetworkManager.makeResponse(num: i)
-                            personages += add
-                            for i in 0..<add.count {
-                                let data = await CharactersNetworkManager.getDataByURL(apiURL: add[i].image)
-                                personagesImages.append(Image(uiImage: UIImage(data: data) ?? UIImage()))
-                            }
-                        }
-                    }
                 }
             }
         }
