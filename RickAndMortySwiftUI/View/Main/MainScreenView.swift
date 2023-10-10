@@ -64,9 +64,9 @@ struct MainScreenView: View {
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
                     let storageManager = StorageManager(modelContext: modelContext)
-                    storageManager.requestPersons(personsCount: persons.count)
-                    storageManager.requestEpisodes(episodesCount: episodes.count)
-                    storageManager.requestLocations(locationsCount: locations.count)
+                    storageManager.requestAll(locationCount: locations.count,
+                                              personsCount: persons.count,
+                                              episodesCount: episodes.count)
                 }
             }
         }

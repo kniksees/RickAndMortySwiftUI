@@ -138,4 +138,32 @@ class StorageManager {
             }
         }
     }
+    
+    public func requestAll(locationCount: Int, personsCount: Int, episodesCount: Int) {
+        Task {
+            let networkCountOfLocations = await LocationsNetworkManager.getCountOfLocations()
+            if locationCount != networkCountOfLocations || locationCount == 0 {
+                for i in locationCount + 1...networkCountOfLocations {
+                    let location = await LocationsNetworkManager.getLocation(num: i)
+                    modelContext.insert(Storege.Location(location: location))
+                }
+            }
+ 
+            let networkCountOfPersons = await PersonsNetworkManager.getCountOfPersons()
+            if personsCount != networkCountOfPersons || personsCount == 0 {
+                for i in  personsCount + 1...networkCountOfPersons {
+                    let person = await PersonsNetworkManager.getPersonInfo(id: i)
+                    await modelContext.insert(Storege.Person(person: person, imageData: PersonsNetworkManager.getDataByURL(apiURL: person.image)))
+                }
+            }
+
+            let networkCountOfEpisodes = await EpisodesNetworkManager.getCountOfEpisodes()
+            if episodesCount != networkCountOfEpisodes || episodesCount == 0 {
+                for i in episodesCount + 1...networkCountOfEpisodes {
+                    let episode = await EpisodesNetworkManager.getEpisodes(id: i)
+                    modelContext.insert(Storege.Episode(episode: episode))
+                }
+            }
+        }
+    }
 }
