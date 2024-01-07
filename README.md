@@ -1,0 +1,7 @@
+![image](https://github.com/kniksees/RickAndMortySwiftUI/assets/56806136/ea56e257-74c2-414c-93eb-810d65e75563)
+![image](https://github.com/kniksees/RickAndMortySwiftUI/assets/56806136/42d12494-3399-48b3-8124-5800667759d2)
+![image](https://github.com/kniksees/RickAndMortySwiftUI/assets/56806136/4f68be33-7e59-40f5-867e-884c4580b288)
+![image](https://github.com/kniksees/RickAndMortySwiftUI/assets/56806136/d78cb99c-da1e-47b9-8096-6f968243269e)
+![image](https://github.com/kniksees/RickAndMortySwiftUI/assets/56806136/f69f6c9b-5bee-4b0a-86af-a83ec9773a9e)
+![image](https://github.com/kniksees/RickAndMortySwiftUI/assets/56806136/702b287b-d81b-4a9a-aed1-7025042411da)
+![image](https://github.com/kniksees/RickAndMortySwiftUI/assets/56806136/19aeb996-b95c-4b0e-afcc-e3443c36d86d)
